@@ -1,6 +1,9 @@
 import './App.css';
 import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import ContactForm from './Copmonents/ContactForm/ContactForm';
+import Filter from './Copmonents/Filter/Filter';
+import ContactList from './Copmonents/ContactList/ContactList'
 
 class App extends Component {
   state = {
@@ -11,117 +14,39 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: ''
+
   }
 
-  handleInputChange = (evt) => {
+  handleFilterChange = (evt) => {
     this.setState({
-      [evt.currentTarget.name]: evt.currentTarget.value
-    });
-    console.log(evt.currentTarget);
-    console.log(evt.currentTarget.name);
-    console.log(evt);
-
-
-
-  }
-
-  //   handleSubmit  = (this.state.name) => {
-  //   evt.preventDefault();
-  //   this.setState(prevState => ({
-  //     contacts: this.state.contacts.push(this.state.name)
-  //   }));
-
-  // }
-
-  handleSubmit = (evt) => {
-    evt.preventDefault();
-    this.addContact(this.state.name, this.state.number)
-    this.setState({ name: "", number: "" })
-
+      filter: evt.currentTarget.value
+    })
   }
 
   addContact = (name, number) => {
-    let nameFromInput = { name: name, number: number }
+    const idContact = uuidv4();
+    let nameFromInput = { name: name, number: number, id: idContact }
     this.setState(prevState => ({
       contacts: [nameFromInput, ...prevState.contacts]
     }));
   }
 
-  // handleFilterChange = (evt) => {
-  //   evt.preventDefault();
-  //   this.setState({
-  //     filter: evt.currentTarget.value
-  //   })
-  // }
-
-  getVisibleContact = () => {
+  getVisibleContacts = () => {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact => contact.name.includes(normalizedFilter));
-
+    return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
   }
 
-
   render() {
-    const visibleContacts = this.getVisibleContact();
+    const visibleContacts = this.getVisibleContacts();
     return (
-      <>
+      <div>
         <h1>Phonebook</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label>Name
-            <input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-              value={this.state.name}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>Number
-            <input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-              value={this.state.number}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <button type="submit" >Add contact</button>
-        </form>
-
-        <div>
-          <h2>Contacts</h2>
-          <div>
-            <p>Find contacts by name</p>
-            <input
-              type="text"
-              name="filter"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-              value={this.state.filter}
-              onChange={this.handleInputChange}
-            />
-          </div>
-          <ul>
-            {visibleContacts.map(contact =>
-              <li key={uuidv4()}>{contact.name}: {contact.number}</li>
-            )
-            }
-
-
-          </ul>
-        </div>
-      </>
-
-
+        <ContactForm addContact={this.addContact} />
+        <h2>Contacts</h2>
+        <Filter value={this.state.filter} оnChange={this.handleFilterChange} />
+        <ContactList getVisibleContact={visibleContacts} />
+      </div>
     )
   }
 
