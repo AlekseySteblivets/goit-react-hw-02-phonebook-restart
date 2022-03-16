@@ -55,7 +55,7 @@ class App extends Component {
   render() {
     const visibleContacts = this.getVisibleContacts();
     return (
-      <div>
+      <div className='block'>
         <h1>Phonebook</h1>
         <ContactForm addContact={this.addContact} />
         <h2>Contacts</h2>

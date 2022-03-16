@@ -1,5 +1,5 @@
 .contactList {
-  width: 300px;
+  width: 400px;
   display: flex;
   /* align-items: center; */
   justify-content: space-between;
@@ -9,4 +9,5 @@
   cursor: pointer;
   background-color: white;
   border-radius: 5px;
+  margin-left: 80px;
 }

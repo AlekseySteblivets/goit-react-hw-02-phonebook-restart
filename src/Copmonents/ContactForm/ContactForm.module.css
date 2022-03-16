@@ -1,6 +1,10 @@
 .container {
   display: table-caption;
   /* flex-direction: column; */
+  border-width: 1;
+  border-color: rgba(36, 31, 31, 0.534);
+  border-style: solid;
+  /* width: 300px; */
 }
 
 .label {
