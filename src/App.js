@@ -25,7 +25,16 @@ class App extends Component {
 
   addContact = (name, number) => {
     const idContact = uuidv4();
-    let nameFromInput = { name: name, number: number, id: idContact }
+    let nameFromInput = { name: name, number: number, id: idContact };
+    const findContact = this.state.contacts.find(contact => contact.name === name && contact.number === number);
+    console.log(findContact);
+
+    if (findContact) {
+      alert(`${name} is already in contacts!`);
+      return;
+    }
+
+
     this.setState(prevState => ({
       contacts: [nameFromInput, ...prevState.contacts]
     }));
@@ -37,6 +46,12 @@ class App extends Component {
     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
   }
 
+  deleteContact = (idForDelete) => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== idForDelete)
+    }));
+  }
+
   render() {
     const visibleContacts = this.getVisibleContacts();
     return (
@@ -45,7 +60,7 @@ class App extends Component {
         <ContactForm addContact={this.addContact} />
         <h2>Contacts</h2>
         <Filter value={this.state.filter} оnChange={this.handleFilterChange} />
-        <ContactList getVisibleContact={visibleContacts} />
+        <ContactList getVisibleContact={visibleContacts} onDeleteContact={this.deleteContact} />
       </div>
     )
   }

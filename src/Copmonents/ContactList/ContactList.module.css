@@ -1,0 +1,12 @@
+.contactList {
+  width: 300px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+.btnDelete {
+  cursor: pointer;
+  background-color: white;
+  border-radius: 5px;
+}
